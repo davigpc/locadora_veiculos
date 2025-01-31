@@ -1,9 +1,7 @@
-import tkinter as tk
-from app.visao.main_view import MainView
 from app.banco import criar_tabelas
 from app.visao.main_view import MainView
 
 if __name__ == "__main__":
-    app = MainView()
-    app.mainloop()
-
+    criar_tabelas()  # Cria as tabelas no banco de dados
+    app = MainView()  # Inicia a interface gráfica
+    app.mainloop()    # Executa o loop principal da interface

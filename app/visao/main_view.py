@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from app.visao.cliente_view import ClientesView
 from app.visao.veiculo_view import VeiculosView
-from app.visao.locacao_view import LocacoesView
+from app.visao.locacao_view import LocacaoView
 
 
 class MainView(tk.Tk):
@@ -89,7 +89,7 @@ class MainView(tk.Tk):
         self.atualizar_status("Janela de Veículos aberta")
 
     def abrir_janela_locacoes(self):
-        LocacoesView(self)
+        LocacaoView(self)
         self.atualizar_status("Janela de Locações aberta")
 
 

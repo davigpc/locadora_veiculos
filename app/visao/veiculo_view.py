@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from .controle.veiculos_controller import VeiculoController
+from app.controle.veiculo_controller import VeiculoController
 
 class VeiculosView(tk.Toplevel):
     def __init__(self, parent):

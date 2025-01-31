@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-from .controle.cliente_controller import ClienteController
+from app.controle.cliente_controller import ClienteController
 
 class ClientesView(tk.Toplevel):
     def __init__(self, parent):
