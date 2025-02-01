@@ -30,7 +30,7 @@ def criar_conexao():
 def criar_tabelas():
     comandos_sql = [
         """
-        CREATE TABLE IF NOT EXISTS clientes (
+        CREATE TABLE IF NOT EXISTS Clientes (
             ID INT PRIMARY KEY AUTO_INCREMENT,
             Nome VARCHAR(255) NOT NULL,
             CPF VARCHAR(11) UNIQUE NOT NULL,
@@ -53,6 +53,7 @@ def criar_tabelas():
             ID INT PRIMARY KEY AUTO_INCREMENT,
             Nome VARCHAR(255) NOT NULL,
             CPF VARCHAR(11) UNIQUE NOT NULL,
+            Senha VARCHAR(255) NOT NULL,
             Telefone VARCHAR(15),
             Endereco VARCHAR(255)
         )

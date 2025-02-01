@@ -4,6 +4,7 @@ from datetime import datetime
 from app.controle.locacao_controller import LocacaoController
 from app.controle.cliente_controller import ClienteController
 from app.controle.veiculo_controller import VeiculoController
+from app.modelo.funcionarioLogado import FuncionarioLogado
 
 class LocacaoView(tk.Toplevel):
     def __init__(self, parent):
@@ -54,7 +55,7 @@ class LocacaoView(tk.Toplevel):
         # Lista de locações
         self.tree = ttk.Treeview(
             self.main_frame,
-            columns=("ID", "Cliente", "Veículo", "Início", "Fim", "Valor"),
+            columns=("ID", "Cliente", "Veículo", "Início", "Fim", "Valor", "Funcionario"),
             show="headings"
         )
         self.tree.heading("ID", text="ID")
@@ -63,6 +64,7 @@ class LocacaoView(tk.Toplevel):
         self.tree.heading("Início", text="Início")
         self.tree.heading("Fim", text="Fim")
         self.tree.heading("Valor", text="Valor (R$)")
+        self.tree.heading("Funcionario", text="Funcionario")
         self.tree.pack(fill=tk.BOTH, expand=True)
 
     def atualizar_clientes(self):
@@ -81,6 +83,10 @@ class LocacaoView(tk.Toplevel):
             veiculo_id = int(self.veiculo_cb.get().split(" - ")[0])
             veiculo = VeiculoController.buscar_veiculo(veiculo_id)
             preco_diario = veiculo["Preco_Diario"]
+
+            if preco_diario is None:
+                messagebox.showerror("Erro", "Preço diário do veículo não está definido!")
+                return
 
             data_inicio = datetime.strptime(self.data_inicio.get(), "%d/%m/%Y")
             data_fim = datetime.strptime(self.data_fim.get(), "%d/%m/%Y")
@@ -102,26 +108,46 @@ class LocacaoView(tk.Toplevel):
             self.tree.delete(item)
         locacoes = LocacaoController.listar_locacoes()
         for loc in locacoes:
+            # Verifica se Valor_Total é None e substitui por 0.00
+            valor_total = loc['Valor_Total'] if loc['Valor_Total'] is not None else 0.00
+            id_funcionario = FuncionarioLogado().get_id()
             self.tree.insert("", tk.END, values=(
                 loc["ID"],
                 loc["Cliente"],
                 loc["Veiculo"],
                 loc["Data_Inicio"],
                 loc["Data_Fim"],
-                f"R$ {loc['Valor_Total']:.2f}"
+                f"R$ {valor_total:.2f}",  # Agora valor_total nunca será None
+                f"{id_funcionario}"
             ))
 
     def salvar_locacao(self):
         """Salva uma nova locação no banco de dados."""
         try:
-            cliente_id = int(self.cliente_cb.get().split(" - ")[0])
-            veiculo_id = int(self.veiculo_cb.get().split(" - ")[0])
+            cliente_selecionado = self.cliente_cb.get()
+            veiculo_selecionado = self.veiculo_cb.get()
+
+            if not cliente_selecionado or not veiculo_selecionado:
+                messagebox.showerror("Erro", "Selecione um cliente e um veículo!")
+                return
+            
+            try:
+                data_inicio = datetime.strptime(self.data_inicio.get(), "%d/%m/%Y").strftime("%Y-%m-%d")
+                data_fim = datetime.strptime(self.data_fim.get(), "%d/%m/%Y").strftime("%Y-%m-%d")
+            except ValueError:
+                messagebox.showerror("Erro", "Formato de data inválido! Use o formato DD/MM/AAAA.")
+                return
+
+            cliente_id = int(cliente_selecionado.split(" - ")[0])
+            veiculo_id = int(veiculo_selecionado.split(" - ")[0])
             data_inicio = datetime.strptime(self.data_inicio.get(), "%d/%m/%Y").strftime("%Y-%m-%d")
             data_fim = datetime.strptime(self.data_fim.get(), "%d/%m/%Y").strftime("%Y-%m-%d")
+            funcionario_id = FuncionarioLogado().get_id()
 
             if LocacaoController.cadastrar_locacao(
                 id_cliente=cliente_id,
                 id_veiculo=veiculo_id,
+                id_funcionario=funcionario_id,
                 data_inicio=data_inicio,
                 data_fim=data_fim
             ):

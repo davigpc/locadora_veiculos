@@ -6,7 +6,7 @@ from app.visao.locacao_view import LocacaoView
 
 
 class MainView(tk.Tk):
-    def __init__(self):
+    def __init__(self, funcionario):
         super().__init__()
         self.title("Sistema de Locação de Veículos - v1.0")
         self.geometry("1024x768")
