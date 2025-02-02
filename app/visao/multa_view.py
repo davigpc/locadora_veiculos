@@ -84,9 +84,9 @@ class MultasView(tk.Toplevel):
         for multa in multas:
             self.tree.insert("", tk.END, values=(
                 multa["ID"],
-                multa["descricao"],
-                multa["valor"],
-                multa["id_locacao"]
+                multa["Descricao"],
+                multa["Valor"],
+                multa["ID_Locacao"]
             ))
 
     def salvar_multa(self):

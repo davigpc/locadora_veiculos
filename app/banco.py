@@ -84,10 +84,12 @@ def criar_tabelas():
         """
         CREATE TABLE IF NOT EXISTS Multas (
             ID INT PRIMARY KEY AUTO_INCREMENT,
-            Descricao VARCHAR(255) NOT NULL,
+            Descricao VARCHAR(100) NOT NULL,
             Valor DECIMAL(10,2) NOT NULL,
-            ID_Locacao INT,
-            FOREIGN KEY (ID_Locacao) REFERENCES Locacoes(ID)
+            ID_Locacao INT NOT NULL,
+            FOREIGN KEY (ID_Locacao) REFERENCES Locacoes(ID) ON DELETE CASCADE,
+            INDEX idx_id_locacao (ID_Locacao)
+
         )
         """
     ]
