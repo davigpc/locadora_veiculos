@@ -3,6 +3,7 @@ from tkinter import ttk
 from app.visao.cliente_view import ClientesView
 from app.visao.veiculo_view import VeiculosView
 from app.visao.locacao_view import LocacaoView
+from app.visao.multa_view import MultasView
 
 
 class MainView(tk.Tk):
@@ -43,6 +44,13 @@ class MainView(tk.Tk):
             command=self.abrir_janela_locacoes,
             accelerator="Ctrl+L"
         )
+
+        menu_operacoes.add_command(
+            label="Cadastrar Multa",
+            command=self.abrir_janela_multas, 
+            accelerator="Ctrl+M"
+        )
+
         menubar.add_cascade(label="Operações", menu=menu_operacoes)
 
         self.config(menu=menubar)
@@ -91,6 +99,10 @@ class MainView(tk.Tk):
     def abrir_janela_locacoes(self):
         LocacaoView(self)
         self.atualizar_status("Janela de Locações aberta")
+
+    def abrir_janela_multas(self):
+        MultasView(self)
+        self.atualizar_status("Janela de Multas aberta")
 
 
 if __name__ == "__main__":
