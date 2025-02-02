@@ -8,7 +8,7 @@ class LoginView(tk.Toplevel):
     def __init__(self, parent, on_login_success):
         super().__init__(parent)
         self.title("Login")
-        self.geometry("300x200")
+        self.geometry("350x400")
         self.on_login_success = on_login_success
         self.criar_widgets()
 
@@ -34,8 +34,8 @@ class LoginView(tk.Toplevel):
         if funcionario:
             funcionario_logado = FuncionarioLogado()
             funcionario_logado.set_funcionario(funcionario)
-            self.on_login_success(funcionario)
             self.destroy()
+            self.on_login_success(funcionario)
         else:
             messagebox.showerror("Erro", "CPF ou senha incorretos!")
 

@@ -11,8 +11,13 @@ class LocacaoView(tk.Toplevel):
         super().__init__(parent)
         self.title("Gestão de Locações")
         self.geometry("1000x800")
+        
+        self.lista_clientes = []  # Lista completa de clientes
+        self.lista_veiculos = []  # Lista completa de veículos
+        
         self.criar_widgets()
-        self.carregar_locacoes()
+        self.carregar_clientes()
+        self.carregar_veiculos()
 
     def criar_widgets(self):
         # Frame principal
@@ -23,17 +28,17 @@ class LocacaoView(tk.Toplevel):
         form_frame = ttk.LabelFrame(self.main_frame, text="Nova Locação")
         form_frame.pack(fill=tk.X, pady=10)
 
-        # Combobox Cliente
+        # Combobox Cliente (Filtro dinâmico)
         ttk.Label(form_frame, text="Cliente:").grid(row=0, column=0, padx=5, pady=5, sticky=tk.W)
-        self.cliente_cb = ttk.Combobox(form_frame, state="readonly")
+        self.cliente_cb = ttk.Combobox(form_frame)
         self.cliente_cb.grid(row=0, column=1, padx=5, pady=5, sticky=tk.W)
-        self.atualizar_clientes()
+        self.cliente_cb.bind("<KeyRelease>", self.filtrar_clientes)
 
-        # Combobox Veículo
+        # Combobox Veículo (Filtro dinâmico)
         ttk.Label(form_frame, text="Veículo:").grid(row=1, column=0, padx=5, pady=5, sticky=tk.W)
-        self.veiculo_cb = ttk.Combobox(form_frame, state="readonly")
+        self.veiculo_cb = ttk.Combobox(form_frame)
         self.veiculo_cb.grid(row=1, column=1, padx=5, pady=5, sticky=tk.W)
-        self.atualizar_veiculos()
+        self.veiculo_cb.bind("<KeyRelease>", self.filtrar_veiculos)
 
         # Datas
         ttk.Label(form_frame, text="Data Início:").grid(row=2, column=0, padx=5, pady=5, sticky=tk.W)
@@ -67,15 +72,34 @@ class LocacaoView(tk.Toplevel):
         self.tree.heading("Funcionario", text="Funcionario")
         self.tree.pack(fill=tk.BOTH, expand=True)
 
-    def atualizar_clientes(self):
-        """Carrega os clientes no Combobox."""
-        clientes = ClienteController.obter_clientes()
-        self.cliente_cb["values"] = [f"{c['ID']} - {c['Nome']}" for c in clientes]
 
-    def atualizar_veiculos(self):
-        """Carrega os veículos no Combobox."""
-        veiculos = VeiculoController.listar_veiculos()
-        self.veiculo_cb["values"] = [f"{v['ID']} - {v['Modelo']} ({v['Placa']})" for v in veiculos]
+    def carregar_clientes(self):
+        """Carrega a lista de clientes do banco e preenche o Combobox."""
+        self.lista_clientes = [f"{c['ID']} - {c['Nome']}" for c in ClienteController.obter_clientes()]
+        self.cliente_cb["values"] = self.lista_clientes
+
+    def carregar_veiculos(self):
+        """Carrega a lista de veículos do banco e preenche o Combobox."""
+        self.lista_veiculos = [f"{v['ID']} - {v['Modelo']} ({v['Placa']})" for v in VeiculoController.listar_veiculos()]
+        self.veiculo_cb["values"] = self.lista_veiculos
+
+    def filtrar_clientes(self, event):
+        """Filtra os clientes conforme o usuário digita."""
+        texto_digitado = self.cliente_cb.get().lower()
+        if texto_digitado:
+            filtrados = [c for c in self.lista_clientes if texto_digitado in c.lower()]
+            self.cliente_cb["values"] = filtrados
+        else:
+            self.cliente_cb["values"] = self.lista_clientes  # Restaura todos os valores
+
+    def filtrar_veiculos(self, event):
+        """Filtra os veículos conforme o usuário digita."""
+        texto_digitado = self.veiculo_cb.get().lower()
+        if texto_digitado:
+            filtrados = [v for v in self.lista_veiculos if texto_digitado in v.lower()]
+            self.veiculo_cb["values"] = filtrados
+        else:
+            self.veiculo_cb["values"] = self.lista_veiculos  # Restaura todos os valores
 
     def calcular_valor(self):
         """Calcula o valor total da locação com base no preço diário e no período."""

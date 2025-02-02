@@ -6,7 +6,7 @@ class CadastroFuncionarioView(tk.Toplevel):
     def __init__(self, parent, on_cadastro_success):
         super().__init__(parent)
         self.title("Cadastro de Funcionário")
-        self.geometry("300x200")
+        self.geometry("800x600")
         self.on_cadastro_success = on_cadastro_success
         self.criar_widgets()
 
