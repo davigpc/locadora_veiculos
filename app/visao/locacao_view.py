@@ -141,7 +141,7 @@ class LocacaoView(tk.Toplevel):
                 loc["Veiculo"],
                 loc["Data_Inicio"],
                 loc["Data_Fim"],
-                f"R$ {valor_total:.2f}",  # Agora valor_total nunca será None
+                f"R$ {valor_total:.2f}",
                 f"{id_funcionario}"
             ))
 
@@ -167,6 +167,11 @@ class LocacaoView(tk.Toplevel):
             data_inicio = datetime.strptime(self.data_inicio.get(), "%d/%m/%Y").strftime("%Y-%m-%d")
             data_fim = datetime.strptime(self.data_fim.get(), "%d/%m/%Y").strftime("%Y-%m-%d")
             funcionario_id = FuncionarioLogado().get_id()
+
+            # Verifica se o veículo já está alugado no período escolhido
+            if LocacaoController.veiculo_ja_alugado(veiculo_id, data_inicio, data_fim):
+                messagebox.showerror("Erro", "Este veículo já está alugado nesse período!")
+                return  
 
             if LocacaoController.cadastrar_locacao(
                 id_cliente=cliente_id,

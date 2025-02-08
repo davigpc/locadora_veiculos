@@ -83,3 +83,39 @@ class LocacaoController:
         finally:
             cursor.close()
             conexao.close()
+
+
+
+    @staticmethod
+    def veiculo_ja_alugado(id_veiculo, data_inicio, data_fim):
+        """Verifica se o veículo já está alugado no período selecionado."""
+        conexao = criar_conexao()
+        if not conexao:
+            return False
+
+        try:
+            cursor = conexao.cursor()
+
+            # Busca locações para o veículo no período selecionado
+            sql = """
+                SELECT COUNT(*) FROM Locacoes
+                WHERE ID_Veiculo = %s
+                AND (
+                    (Data_Inicio BETWEEN %s AND %s) OR
+                    (Data_Fim BETWEEN %s AND %s) OR
+                    (%s BETWEEN Data_Inicio AND Data_Fim) OR
+                    (%s BETWEEN Data_Inicio AND Data_Fim)
+                )
+            """
+            valores = (id_veiculo, data_inicio, data_fim, data_inicio, data_fim, data_inicio, data_fim)
+            cursor.execute(sql, valores)
+            resultado = cursor.fetchone()
+
+            return resultado[0] > 0  # Retorna True se houver pelo menos um conflito
+
+        except Exception as e:
+            print(f"Erro ao verificar disponibilidade do veículo: {e}")
+            return False
+        finally:
+            cursor.close()
+            conexao.close()
