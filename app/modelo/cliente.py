@@ -40,3 +40,55 @@ class Cliente:
                 cursor.close()
                 conexao.close()
         return []
+    
+    @staticmethod            
+    def editar(id_cliente, nome, cpf, telefone, endereco):
+        conexao = criar_conexao()
+        if not conexao:
+            return None
+
+        try:
+            cursor = conexao.cursor()
+            valores = []
+            sql = "UPDATE Clientes SET "
+            
+            if nome:
+                sql += "Nome = %s, "
+                valores.append(nome)
+            if cpf:
+                sql += "CPF = %s, "
+                valores.append(cpf)
+            if telefone:
+                sql += "Telefone = %s, "
+                valores.append(telefone)
+            if endereco:
+                sql += "Endereco = %s, "
+                valores.append(endereco)
+            sql = sql.rstrip(', ') + " WHERE ID = %s"
+            valores.append(id_cliente)
+            cursor.execute(sql, valores)
+            conexao.commit()
+        except Exception as e:
+            print(f"Erro ao editar veículo: {e}")
+        finally:
+            cursor.close()
+            conexao.close() 
+    
+    @staticmethod
+    def remover(cpf_cliente):
+        
+        conexao = criar_conexao()
+        if not conexao:
+            return None
+
+        try:
+            cursor = conexao.cursor()
+            sql = "DELETE FROM Clientes WHERE CPF = %s"
+            cursor.execute(sql, (cpf_cliente,))
+            conexao.commit()
+        except Exception as e:
+            print(f"Erro ao remover cliente: {e}")
+            return None
+        finally:
+            cursor.close()
+            conexao.close() 

@@ -12,10 +12,10 @@ class VeiculoController:
         try:
             cursor = conexao.cursor()
             sql = """
-                INSERT INTO Veiculos 
-                (Modelo, Placa, Ano, Categoria, Preco_Diario)
-                VALUES (%s, %s, %s, %s, %s)
-            """
+                    INSERT INTO Veiculos 
+                    (Modelo, Placa, Ano, Categoria, Preco_Diario)
+                    VALUES (%s, %s, %s, %s, %s)
+                """
             valores = (modelo, placa, ano, categoria, preco_diario)
             cursor.execute(sql, valores)
             conexao.commit()
@@ -64,3 +64,11 @@ class VeiculoController:
         finally:
             cursor.close()
             conexao.close()
+            
+    @staticmethod            
+    def editar_veiculo(id_veiculo, modelo, placa, ano, categoria, preco_diario):
+        return Veiculo.editar(id_veiculo, modelo, placa, ano, categoria, preco_diario)
+            
+    @staticmethod            
+    def remover_veiculo(id_veiculo):
+        return Veiculo.remover(id_veiculo)

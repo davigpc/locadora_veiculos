@@ -50,3 +50,11 @@ class FuncionarioController:
                 cursor.close()
                 conexao.close()
         return False
+    
+    @staticmethod            
+    def editar_funcionario(id_funcionario, nome, cpf, senha, telefone, endereco):
+        return Funcionario.editar(id_funcionario, nome, cpf, senha, telefone, endereco)
+    
+    @staticmethod
+    def remover_funcionario(cpf_funcionario):
+        return Funcionario.remover(cpf_funcionario)

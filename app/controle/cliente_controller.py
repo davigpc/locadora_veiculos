@@ -8,3 +8,11 @@ class ClienteController:
     @staticmethod
     def obter_clientes():
         return Cliente.listar()
+    
+    @staticmethod            
+    def editar_cliente(id_funcionario, nome, cpf, senha, telefone, endereco):
+        return Cliente.editar(id_funcionario, nome, cpf, senha, telefone, endereco)
+    
+    @staticmethod
+    def remover_cliente(cpf_cliente):
+        return Cliente.remover(cpf_cliente)
