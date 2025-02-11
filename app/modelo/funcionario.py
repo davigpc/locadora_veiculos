@@ -3,7 +3,7 @@ import bcrypt
 
 class Funcionario:
     @staticmethod
-    def criar(nome, cpf, senha, telefone, endereco):
+    def criar(nome, cpf, senha, telefone, rua, numero, bairro):
         conexao = criar_conexao()
         if conexao:
             try:
@@ -14,10 +14,10 @@ class Funcionario:
 
                 sql = """
                     INSERT INTO Funcionarios 
-                    (Nome, CPF, Senha, Telefone, Endereco)
-                    VALUES (%s, %s, %s, %s, %s)
+                    (Nome, CPF, Senha, Telefone, Rua, Numero, Bairro)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
                 """
-                valores = (nome, cpf, senha_criptografada, telefone, endereco)
+                valores = (nome, cpf, senha_criptografada, telefone, rua, numero, bairro)
                 cursor.execute(sql, valores)
                 conexao.commit()
                 return True
@@ -36,8 +36,8 @@ class Funcionario:
             try:
                 cursor = conexao.cursor(dictionary=True)
                 cursor.execute("SELECT * FROM Funcionarios")
-                Funcionarios = cursor.fetchall()
-                return Funcionarios
+                funcionarios = cursor.fetchall()
+                return funcionarios
             except Exception as e:
                 print(f"Erro ao listar Funcionarios: {e}")
                 return []
@@ -47,7 +47,7 @@ class Funcionario:
         return []
     
     @staticmethod            
-    def editar(id_funcionario, nome, cpf, senha, telefone, endereco):
+    def editar(id_funcionario, nome, cpf, senha, telefone, rua, numero, bairro):
         conexao = criar_conexao()
         if not conexao:
             return None
@@ -69,19 +69,26 @@ class Funcionario:
             if telefone:
                 sql += "Telefone = %s, "
                 valores.append(telefone)
-            if endereco:
-                sql += "Endereco = %s, "
-                valores.append(endereco)
+            if rua:
+                sql += "Rua = %s, "
+                valores.append(rua)
+            if numero:
+                sql += "Numero = %s, "
+                valores.append(numero)
+            if bairro:
+                sql += "Bairro = %s, "
+                valores.append(bairro)
+
             sql = sql.rstrip(', ') + " WHERE ID = %s"
             valores.append(id_funcionario)
             cursor.execute(sql, valores)
             conexao.commit()
         except Exception as e:
-            print(f"Erro ao editar veículo: {e}")
+            print(f"Erro ao editar funcionário: {e}")
         finally:
             cursor.close()
             conexao.close()     
-    
+        
     @staticmethod
     def remover(cpf_funcionario):
         conexao = criar_conexao()
@@ -99,5 +106,3 @@ class Funcionario:
         finally:
             cursor.close()
             conexao.close() 
-    
-    

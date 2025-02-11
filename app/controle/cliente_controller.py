@@ -2,16 +2,16 @@ from app.modelo.cliente import Cliente
 
 class ClienteController:
     @staticmethod
-    def cadastrar_cliente(nome, cpf, telefone, endereco):
-        return Cliente.criar(nome, cpf, telefone, endereco)
+    def cadastrar_cliente(nome, cpf, telefone, rua, numero, bairro):
+        return Cliente.criar(nome, cpf, telefone, rua, numero, bairro)
 
     @staticmethod
     def obter_clientes():
         return Cliente.listar()
     
     @staticmethod            
-    def editar_cliente(id_funcionario, nome, cpf, senha, telefone, endereco):
-        return Cliente.editar(id_funcionario, nome, cpf, senha, telefone, endereco)
+    def editar_cliente(id_cliente, nome, cpf, telefone, rua, numero, bairro):
+        return Cliente.editar(id_cliente, nome, cpf, telefone, rua, numero, bairro)
     
     @staticmethod
     def remover_cliente(cpf_cliente):

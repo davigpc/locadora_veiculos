@@ -1,21 +1,8 @@
 import mysql.connector
 from mysql.connector import Error
 
-
 def criar_conexao():
     try:
-        # Primeiro conecta sem especificar o banco
-        conexao = mysql.connector.connect(
-            host='localhost',
-            user='root',  # seu usuário
-            password='root'
-        )
-        cursor = conexao.cursor()
-        cursor.execute("CREATE DATABASE IF NOT EXISTS locadora")
-        conexao.commit()
-        conexao.close()
-
-        # Agora conecta ao banco específico
         conexao = mysql.connector.connect(
             host='localhost',
             user='root',
@@ -35,7 +22,9 @@ def criar_tabelas():
             Nome VARCHAR(255) NOT NULL,
             CPF VARCHAR(11) UNIQUE NOT NULL,
             Telefone VARCHAR(15),
-            Endereco VARCHAR(255)
+            Rua VARCHAR(255) DEFAULT '',
+            Numero INT DEFAULT 0,
+            Bairro VARCHAR(100) DEFAULT ''
         )
         """,
         """
@@ -55,7 +44,9 @@ def criar_tabelas():
             CPF VARCHAR(11) UNIQUE NOT NULL,
             Senha VARCHAR(255) NOT NULL,
             Telefone VARCHAR(15),
-            Endereco VARCHAR(255)
+            Rua VARCHAR(255),
+            Numero INT,
+            Bairro VARCHAR(100)
         )
         """,
         """
@@ -89,7 +80,6 @@ def criar_tabelas():
             ID_Locacao INT NOT NULL,
             FOREIGN KEY (ID_Locacao) REFERENCES Locacoes(ID) ON DELETE CASCADE,
             INDEX idx_id_locacao (ID_Locacao)
-
         )
         """
     ]
@@ -102,11 +92,15 @@ def criar_tabelas():
                 cursor.execute(comando)
             conexao.commit()
             print("Tabelas criadas com sucesso!")
-        except Error as err:
-            print(f"Erro ao criar tabelas: {err}")
+
+            # Verifica se as colunas existem antes de atualizar registros
+            cursor.execute("SHOW COLUMNS FROM Clientes LIKE 'Rua';")
+            if cursor.fetchone():
+                cursor.execute("UPDATE Clientes SET Rua = '', Numero = 0, Bairro = '' WHERE Rua IS NULL;")
+                conexao.commit()
+                print("Registros atualizados com sucesso!")
+        except Error as e:
+            print(f"Erro ao criar tabelas ou atualizar registros: {e}")
         finally:
             cursor.close()
             conexao.close()
-
-if __name__ == "__main__":
-    criar_tabelas()
