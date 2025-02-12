@@ -106,3 +106,32 @@ class Funcionario:
         finally:
             cursor.close()
             conexao.close() 
+            
+    def obter(busca=None):
+        conexao = criar_conexao()
+        if not conexao:
+            return []
+        
+        try:
+            cursor = conexao.cursor(dictionary=True)  # Certifique-se que retorna um dicionário
+            
+            if busca:
+                sql = "SELECT * FROM Funcionarios WHERE Nome LIKE %s OR CPF LIKE %s"
+                parametro = f"%{busca}%"
+                cursor.execute(sql, (parametro, parametro))
+            else:
+                sql = "SELECT * FROM Funcionarios"
+                cursor.execute(sql)
+            
+            funcionarios = cursor.fetchall()
+
+            # 🔍 Depuração: Imprime os dados retornados
+            print("Funcionários retornados:", funcionarios)
+
+            return funcionarios
+        except Exception as e:
+            print(f"Erro ao obter funcionários: {e}")
+            return []
+        finally:
+            cursor.close()
+            conexao.close()

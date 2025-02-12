@@ -97,3 +97,31 @@ class Cliente:
         finally:
             cursor.close()
             conexao.close()
+            
+    def obter(busca=None):
+        conexao = criar_conexao()
+        if not conexao:
+            return []
+        
+        try:
+            cursor = conexao.cursor(dictionary=True)
+            
+            if busca:
+                sql = "SELECT * FROM Clientes WHERE Nome LIKE %s OR CPF LIKE %s"
+                parametro = f"%{busca}%"
+                cursor.execute(sql, (parametro, parametro))
+            else:
+                sql = "SELECT * FROM Clientes"
+                cursor.execute(sql)
+            
+            clientes = cursor.fetchall()
+
+            print("clientes retornados:", clientes)
+
+            return clientes
+        except Exception as e:
+            print(f"Erro ao obter clientes: {e}")
+            return []
+        finally:
+            cursor.close()
+            conexao.close()

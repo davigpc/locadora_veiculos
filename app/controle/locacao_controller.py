@@ -121,8 +121,8 @@ class LocacaoController:
             conexao.close()
             
     @staticmethod  
-    def editar_locacoes(id_locacao):
-        return Locacao.editar(id_locacao)
+    def editar_locacoes(id_locacao, id_cliente, id_veiculo, id_funcionario, data_inicio, data_fim):
+        return Locacao.editar(id_locacao, id_cliente, id_veiculo, id_funcionario, data_inicio, data_fim)
     @staticmethod  
-    def remover_locacoes(id_locacao, id_cliente, id_veiculo, id_funcionario, data_inicio, data_fim):
-        return Locacao.remover(id_locacao, id_cliente, id_veiculo, id_funcionario, data_inicio, data_fim)
+    def remover_locacoes(id_locacao):
+        return Locacao.remover(id_locacao)

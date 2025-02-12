@@ -1,6 +1,22 @@
 import mysql.connector
 from mysql.connector import Error
 
+def criar_banco():
+    try:
+        conexao = mysql.connector.connect(
+            host='localhost',
+            user='root',
+            password='root'
+        )
+        cursor = conexao.cursor()
+        cursor.execute("CREATE DATABASE IF NOT EXISTS locadora;")
+        conexao.commit()
+        cursor.close()
+        conexao.close()
+        print("Banco de dados 'locadora' verificado/criado com sucesso.")
+    except Error as err:
+        print(f"Erro ao criar banco de dados: {err}")
+
 def criar_conexao():
     try:
         conexao = mysql.connector.connect(
@@ -64,15 +80,6 @@ def criar_tabelas():
         )
         """,
         """
-        CREATE TABLE IF NOT EXISTS Pagamentos (
-            ID INT PRIMARY KEY AUTO_INCREMENT,
-            Data_Pagamento DATE NOT NULL,
-            Valor_Pago DECIMAL(10,2) NOT NULL,
-            ID_Locacao INT,
-            FOREIGN KEY (ID_Locacao) REFERENCES Locacoes(ID)
-        )
-        """,
-        """
         CREATE TABLE IF NOT EXISTS Multas (
             ID INT PRIMARY KEY AUTO_INCREMENT,
             Descricao VARCHAR(100) NOT NULL,
@@ -104,3 +111,7 @@ def criar_tabelas():
         finally:
             cursor.close()
             conexao.close()
+
+# Executando
+criar_banco()  # Primeiro, cria o banco de dados se não existir
+criar_tabelas()  # Agora, conecta ao banco e cria as tabelas

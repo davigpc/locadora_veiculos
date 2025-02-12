@@ -35,7 +35,7 @@ class ClientesView(tk.Toplevel):
 
         ttk.Label(form_frame, text="Número:").grid(row=4, column=0, padx=5, pady=5, sticky=tk.W)
         self.numero_entry = ttk.Entry(form_frame, width=15)
-        self.numero_entry.grid(row=4, column=1, padx=5, pady=5)
+        self.numero_entry.grid(row=4, column=1, padx=5, pady=5, sticky=tk.W)
 
         ttk.Label(form_frame, text="Bairro:").grid(row=5, column=0, padx=5, pady=5, sticky=tk.W)
         self.bairro_entry = ttk.Entry(form_frame, width=40)

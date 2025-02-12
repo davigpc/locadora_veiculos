@@ -59,3 +59,5 @@ class FuncionarioController:
     @staticmethod
     def editar_funcionario(id_funcionario, nome, cpf, senha, telefone, rua, numero, bairro):
         return Funcionario.editar(id_funcionario, nome, cpf, senha, telefone, rua, numero, bairro)
+    def obter_funcionarios(busca=None):
+        return Funcionario.obter(busca)

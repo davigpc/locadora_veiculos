@@ -1,4 +1,4 @@
-from app.banco import criar_tabelas
+from app.banco import *
 from app.visao.main_view import MainView
 from app.visao.login_view import LoginView
 from app.controle.funcionario_controller import FuncionarioController

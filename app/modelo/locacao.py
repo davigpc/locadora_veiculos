@@ -45,7 +45,7 @@ class Locacao:
 
         try:
             cursor = conexao.cursor()
-            
+
             preco_diario = None
             if id_veiculo:
                 cursor.execute("SELECT Preco_Diario FROM Veiculos WHERE ID = %s", (id_veiculo,))
@@ -53,51 +53,30 @@ class Locacao:
                 if not veiculo:
                     print("Veículo não encontrado!")
                     return False
-                preco_diario = veiculo[0]  # Preço diário do veículo
+                preco_diario = veiculo[0]
 
-            # Converte as datas de strings para objetos datetime
-            if data_inicio:
-                data_inicio = datetime.strptime(data_inicio, "%Y-%m-%d")
-            if data_fim:
-                data_fim = datetime.strptime(data_fim, "%Y-%m-%d")
+            data_inicio = datetime.strptime(data_inicio, "%Y-%m-%d")
+            data_fim = datetime.strptime(data_fim, "%Y-%m-%d")
 
-            # Calcula o valor total se ambas as datas forem fornecidas
-            valor_total = None
-            if data_inicio and data_fim:
-                dias = (data_fim - data_inicio).days
-                if dias < 1:
-                    print("A data final deve ser posterior à data inicial!")
-                    return False
-                if preco_diario:
-                    valor_total = dias * preco_diario
+            if data_fim <= data_inicio:
+                print("A data final deve ser posterior à data inicial!")
+                return False
 
-            valores = []
-            sql = "UPDATE Locacoes SET "
+            valor_total = (data_fim - data_inicio).days * preco_diario if preco_diario else None
 
-            if data_inicio:
-                sql += "Data_Inicio = %s, "
-                valores.append(data_inicio)
-            if data_fim:
-                sql += "Data_Fim = %s, "
-                valores.append(data_fim)
-            if valor_total is not None:
-                sql += "Valor_Total = %s, "
-                valores.append(valor_total)
-            if id_cliente:
-                sql += "ID_Cliente = %s, "
-                valores.append(id_cliente)
-            if id_veiculo:
-                sql += "ID_Veiculo = %s, "
-                valores.append(id_veiculo)
-            if id_funcionario:
-                sql += "ID_Funcionario = %s, "
-                valores.append(id_funcionario)
-                sql = sql.rstrip(', ') + " WHERE ID = %s"
-                valores.append(id_locacao)
-                cursor.execute(sql, valores)
-                conexao.commit()
+            sql = """
+                UPDATE Locacoes 
+                SET Data_Inicio = %s, Data_Fim = %s, Valor_Total = %s, ID_Cliente = %s, ID_Veiculo = %s, ID_Funcionario = %s 
+                WHERE ID = %s
+            """
+            valores = (data_inicio, data_fim, valor_total, id_cliente, id_veiculo, id_funcionario, id_locacao)
+            cursor.execute(sql, valores)
+            conexao.commit()
+            return True
+
         except Exception as e:
             print(f"Erro ao editar locação: {e}")
+            return None
         finally:
             cursor.close()
             conexao.close()
@@ -110,12 +89,61 @@ class Locacao:
 
         try:
             cursor = conexao.cursor()
-            sql = "DELETE FROM Locacoes WHERE ID = %s"
-            cursor.execute(sql, (id_locacao,))
+
+            # Verifica se a locação existe
+            cursor.execute("SELECT ID FROM Locacoes WHERE ID = %s", (id_locacao,))
+            if not cursor.fetchone():
+                print("Locação não encontrada!")
+                return False
+            
+            # Exclui a locação
+            cursor.execute("DELETE FROM Locacoes WHERE ID = %s", (id_locacao,))
             conexao.commit()
+            return True
+
         except Exception as e:
             print(f"Erro ao remover locação: {e}")
             return None
         finally:
             cursor.close()
-            conexao.close() 
+            conexao.close()
+            
+    @staticmethod
+    def obter(busca=None):
+        conexao = criar_conexao()
+        if not conexao:
+            return []
+        
+        try:
+            cursor = conexao.cursor(dictionary=True)
+
+            if busca:
+                sql = """
+                    SELECT l.*, c.Nome AS Cliente, v.Modelo AS Veiculo, f.Nome AS Funcionario
+                    FROM Locacoes l
+                    LEFT JOIN Clientes c ON l.ID_Cliente = c.ID
+                    LEFT JOIN Veiculos v ON l.ID_Veiculo = v.ID
+                    LEFT JOIN Funcionarios f ON l.ID_Funcionario = f.ID
+                    WHERE c.Nome LIKE %s OR v.Modelo LIKE %s
+                """
+                parametro = f"%{busca}%"
+                cursor.execute(sql, (parametro, parametro))
+            else:
+                sql = """
+                    SELECT l.*, c.Nome AS Cliente, v.Modelo AS Veiculo, f.Nome AS Funcionario
+                    FROM Locacoes l
+                    LEFT JOIN Clientes c ON l.ID_Cliente = c.ID
+                    LEFT JOIN Veiculos v ON l.ID_Veiculo = v.ID
+                    LEFT JOIN Funcionarios f ON l.ID_Funcionario = f.ID
+                """
+                cursor.execute(sql)
+
+            locacoes = cursor.fetchall()
+            return locacoes
+
+        except Exception as e:
+            print(f"Erro ao obter locações: {e}")
+            return []
+        finally:
+            cursor.close()
+            conexao.close()

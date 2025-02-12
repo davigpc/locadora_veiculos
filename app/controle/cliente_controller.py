@@ -16,3 +16,5 @@ class ClienteController:
     @staticmethod
     def remover_cliente(cpf_cliente):
         return Cliente.remover(cpf_cliente)
+    def obter_cliente(busca = None):
+        return Cliente.obter(busca)

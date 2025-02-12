@@ -6,6 +6,8 @@ from app.visao.locacao_view import LocacaoView
 from app.visao.multa_view import MultasView
 from app.visao.funcionario_view import CadastroFuncionarioView
 from app.visao.funcionario_edit_exclude_view import FuncionarioEditExcludeView
+from app.visao.cliente_edit_exclude_view import ClienteEditExcludeView
+from app.visao.locacao_edit_exclude_view import LocacaoEditExcludeView  # Nova importação para gerenciar locações
 
 class MainView(tk.Tk):
     def __init__(self, funcionario):
@@ -38,6 +40,8 @@ class MainView(tk.Tk):
         # Menu Edições e Exclusões
         menu_edicoes = tk.Menu(menubar, tearoff=0)
         menu_edicoes.add_command(label="Gerenciar Funcionários", command=self.abrir_janela_funcionario_ed_ex)
+        menu_edicoes.add_command(label="Gerenciar Clientes", command=self.abrir_janela_clientes_ed_ex)
+        menu_edicoes.add_command(label="Gerenciar Locações", command=self.abrir_janela_locacoes_ed_ex)
         menubar.add_cascade(label="Edições e Exclusões", menu=menu_edicoes)
         
         self.config(menu=menubar)
@@ -87,6 +91,14 @@ class MainView(tk.Tk):
     def abrir_janela_funcionario_ed_ex(self):
         FuncionarioEditExcludeView(self)
         self.atualizar_status("Gerenciamento de Funcionários aberto")
+    
+    def abrir_janela_clientes_ed_ex(self):
+        ClienteEditExcludeView(self)
+        self.atualizar_status("Gerenciamento de Clientes aberto")
+    
+    def abrir_janela_locacoes_ed_ex(self):
+        LocacaoEditExcludeView(self)
+        self.atualizar_status("Gerenciamento de Locações aberto")
 
 if __name__ == "__main__":
     app = MainView(None)
