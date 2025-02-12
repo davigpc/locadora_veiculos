@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from app.controle.veiculo_controller import VeiculoController
-from app.visao.veiculo_edit_view import VeiculoEditView  # View para edição de veículo
+from app.visao.veiculo_edit_view import VeiculoEditView 
 
 class VeiculoEditExcludeView(tk.Toplevel):
     def __init__(self, parent):
@@ -12,7 +12,7 @@ class VeiculoEditExcludeView(tk.Toplevel):
         self.carregar_veiculos()
 
     def criar_widgets(self):
-        # Frame para pesquisa
+   
         search_frame = ttk.Frame(self)
         search_frame.pack(fill=tk.X, padx=10, pady=5)
         
@@ -49,7 +49,6 @@ class VeiculoEditExcludeView(tk.Toplevel):
         Carrega (ou recarrega) a lista de veículos filtrando pelo campo de busca.
         """
         busca = self.search_entry.get().strip()
-        # Obtém os veículos através do controller – o método pode aplicar o filtro ou retornar todos
         veiculos = VeiculoController.obter_veiculo(busca)
         # Limpa a Treeview
         self.tree.delete(*self.tree.get_children())
@@ -80,10 +79,10 @@ class VeiculoEditExcludeView(tk.Toplevel):
             "Categoria": item["values"][4],
             "Preco_Diario": item["values"][5],
         }
-        # Callback para atualizar a lista após a edição
+
         def atualizar_lista():
             self.carregar_veiculos()
-        # Abre a view de edição, passando o veículo selecionado e o callback
+
         VeiculoEditView(self, veiculo, on_edit_success=atualizar_lista)
 
     def excluir_veiculo(self):

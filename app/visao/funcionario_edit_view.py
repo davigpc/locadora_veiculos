@@ -62,8 +62,8 @@ class CadastroFuncionarioEditView(tk.Toplevel):
         """Preenche os campos com os dados do funcionário e trava o CPF."""
         self.nome_entry.insert(0, self.funcionario.get("Nome", ""))
         self.cpf_entry.insert(0, self.funcionario.get("CPF", ""))
-        self.cpf_entry.config(state="disabled")  # Impede a edição do CPF
-        # O campo de senha permanece vazio; somente será alterada se preenchido
+        self.cpf_entry.config(state="disabled") 
+   
         self.telefone_entry.insert(0, self.funcionario.get("Telefone", ""))
         self.rua_entry.insert(0, self.funcionario.get("Rua", ""))
         self.numero_entry.insert(0, str(self.funcionario.get("Numero", "")))
@@ -71,7 +71,7 @@ class CadastroFuncionarioEditView(tk.Toplevel):
 
     def limpar_campos(self):
         self.nome_entry.delete(0, tk.END)
-        # CPF permanece travado, portanto não é limpo
+     
         self.senha_entry.delete(0, tk.END)
         self.telefone_entry.delete(0, tk.END)
         self.rua_entry.delete(0, tk.END)
@@ -80,7 +80,7 @@ class CadastroFuncionarioEditView(tk.Toplevel):
         
     def editar_funcionario(self):
         nome = self.nome_entry.get().strip()
-        cpf = self.cpf_entry.get().strip()  # Valor obtido do campo travado
+        cpf = self.cpf_entry.get().strip()  
         senha = self.senha_entry.get().strip()
         telefone = self.telefone_entry.get().strip()
         rua = self.rua_entry.get().strip()
@@ -91,7 +91,7 @@ class CadastroFuncionarioEditView(tk.Toplevel):
             messagebox.showerror("Erro", "Nome e CPF são obrigatórios.")
             return
 
-        # Se o usuário preencheu o campo de senha, ela será alterada
+
         if senha:
             try:
                 senha = bcrypt.hashpw(senha.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -99,7 +99,7 @@ class CadastroFuncionarioEditView(tk.Toplevel):
                 messagebox.showerror("Erro", f"Erro ao criptografar a senha: {e}")
                 return
         else:
-            senha = None  # Indica que a senha não será alterada
+            senha = None
 
         try:
             numero = int(numero)

@@ -12,7 +12,7 @@ class VeiculoEditView(tk.Toplevel):
         super().__init__(parent)
         self.title("Editar Veículo")
         self.geometry("600x400")
-        self.veiculo = veiculo  # Deve conter as chaves: ID, Modelo, Placa, Ano, Categoria, Preco_Diario
+        self.veiculo = veiculo 
         self.on_edit_success = on_edit_success
         self.criar_widgets()
 

@@ -78,7 +78,7 @@ class CadastroFuncionarioView(tk.Toplevel):
 
         if FuncionarioController.cadastrar_funcionario(**dados):
             messagebox.showinfo("Sucesso", "Funcionário cadastrado com sucesso!")
-            self.on_cadastro_success()  # Chama o callback após o cadastro
+            self.on_cadastro_success() 
             self.destroy()
         else:
             messagebox.showerror("Erro", "Falha ao cadastrar funcionário!")

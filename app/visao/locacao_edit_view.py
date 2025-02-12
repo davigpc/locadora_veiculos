@@ -90,20 +90,20 @@ class LocacaoEditView(tk.Toplevel):
             return
 
         try:
-            # Validação do formato das datas
+          
             datetime.strptime(data_inicio, "%Y-%m-%d")
             datetime.strptime(data_fim, "%Y-%m-%d")
         except ValueError:
             messagebox.showerror("Erro", "Formato de data inválido. Utilize YYYY-MM-DD.")
             return
 
-        # Obtém os IDs necessários para a edição (armazenados no dicionário recebido)
+        
         id_locacao = self.locacao.get("ID")
         id_cliente = self.locacao.get("ID_Cliente")
         id_veiculo = self.locacao.get("ID_Veiculo")
         id_funcionario = self.locacao.get("ID_Funcionario")
 
-        # Chama o método de edição da locação no controlador
+     
         resultado = LocacaoController.editar_locacoes(id_locacao, id_cliente, id_veiculo, id_funcionario, data_inicio, data_fim)
         if resultado is None:
             messagebox.showerror("Erro", "Falha ao editar locação!")

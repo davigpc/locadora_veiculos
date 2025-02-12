@@ -12,7 +12,7 @@ class LocacaoEditExcludeView(tk.Toplevel):
         self.carregar_locacoes()
 
     def criar_widgets(self):
-        # Campo de pesquisa (por Nome de Cliente ou Nome do Veículo)
+
         search_frame = ttk.Frame(self)
         search_frame.pack(fill=tk.X, padx=10, pady=5)
         
@@ -58,10 +58,10 @@ class LocacaoEditExcludeView(tk.Toplevel):
 
     def carregar_locacoes(self):
         busca = self.search_entry.get().strip().lower()
-        locacoes = LocacaoController.listar_locacoes()  # Método que retorna uma lista de dicionários com os dados da locação
+        locacoes = LocacaoController.listar_locacoes()  
         self.tree.delete(*self.tree.get_children())
         for loc in locacoes:
-            # Filtra pela pesquisa: verifica se a busca está presente no nome do Cliente ou no Modelo do Veículo
+
             cliente = loc.get("Cliente", "").lower()
             veiculo = loc.get("Veiculo", "").lower()
             if not busca or busca in cliente or busca in veiculo:
@@ -73,9 +73,9 @@ class LocacaoEditExcludeView(tk.Toplevel):
                     loc.get("Data_Inicio"),
                     loc.get("Data_Fim"),
                     loc.get("Valor_Total"),
-                    loc.get("ID_Cliente"),    # Coluna oculta
-                    loc.get("ID_Veiculo"),    # Coluna oculta
-                    loc.get("ID_Funcionario") # Coluna oculta
+                    loc.get("ID_Cliente"),   
+                    loc.get("ID_Veiculo"),   
+                    loc.get("ID_Funcionario") 
                 ))
 
     def editar_locacao(self):
@@ -100,7 +100,7 @@ class LocacaoEditExcludeView(tk.Toplevel):
         }
         def atualizar_lista():
             self.carregar_locacoes()
-        # Abre a view de edição para locação usando LocacaoEditView
+   
         LocacaoEditView(self, locacao=locacao, on_editar_success=atualizar_lista)
 
     def excluir_locacao(self):

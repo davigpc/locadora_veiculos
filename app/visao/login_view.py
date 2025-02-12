@@ -42,7 +42,7 @@ class LoginView(tk.Toplevel):
     def abrir_cadastro(self):
         """Abre a tela de cadastro de funcionários."""
         cadastro_view = CadastroFuncionarioView(
-            self,  # Passa a tela de login como parent
+            self, 
             on_cadastro_success=lambda: messagebox.showinfo("Sucesso", "Funcionário cadastrado com sucesso!")
         )
-        cadastro_view.grab_set()  # Mantém o foco na tela de cadastro
+        cadastro_view.grab_set() 

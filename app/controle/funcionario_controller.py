@@ -19,9 +19,9 @@ class FuncionarioController:
                 funcionario = cursor.fetchone()
 
                 if funcionario and bcrypt.checkpw(senha.encode('utf-8'), funcionario['Senha'].encode('utf-8')):
-                    return funcionario  # Retorna os dados do funcionário se o login for bem-sucedido
+                    return funcionario 
                 else:
-                    return None  # Retorna None se o CPF ou senha estiverem incorretos
+                    return None 
             except Exception as e:
                 print(f"Erro ao autenticar funcionário: {e}")
                 return None
@@ -39,7 +39,7 @@ class FuncionarioController:
                 cursor = conexao.cursor()
                 cursor.execute("SELECT COUNT(*) FROM Funcionarios")
                 count = cursor.fetchone()[0]
-                return count > 0  # Retorna True se houver funcionários cadastrados
+                return count > 0 
             except Exception as e:
                 print(f"Erro ao verificar funcionários: {e}")
                 return False

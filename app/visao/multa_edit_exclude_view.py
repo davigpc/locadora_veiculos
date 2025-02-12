@@ -45,7 +45,7 @@ class MultaEditExcludeView(tk.Toplevel):
         multas = MultaController.obter_multas()
         self.tree.delete(*self.tree.get_children())
         for multa in multas:
-            # Filtra pela descrição, se o campo de busca estiver preenchido
+
             if not busca or busca.lower() in multa["Descricao"].lower():
                 self.tree.insert("", tk.END, values=(
                     multa["ID"],
@@ -84,7 +84,7 @@ class MultaEditExcludeView(tk.Toplevel):
 
         confirmacao = messagebox.askyesno("Confirmação", "Deseja realmente excluir esta multa?")
         if confirmacao:
-            # Seguindo a mesma lógica dos demais módulos, se o método de remoção retornar None, a operação foi bem-sucedida.
+           
             if MultaController.remover_locacoes(multa_id) is None:
                 messagebox.showinfo("Sucesso", "Multa excluída com sucesso!")
                 self.carregar_multas()

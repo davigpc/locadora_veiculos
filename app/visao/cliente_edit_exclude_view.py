@@ -1,8 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from app.controle.cliente_controller import ClienteController
-from app.visao.cliente_edit_view import ClienteEditView  # Certifique-se de que o nome do módulo/classe está correto
-
+from app.visao.cliente_edit_view import ClienteEditView 
 class ClienteEditExcludeView(tk.Toplevel):
     def __init__(self, parent):
         super().__init__(parent)
@@ -42,7 +41,7 @@ class ClienteEditExcludeView(tk.Toplevel):
 
     def carregar_clientes(self):
         busca = self.search_entry.get().strip()
-        clientes = ClienteController.obter_cliente()  # Certifique-se de que esse método retorna uma lista de clientes
+        clientes = ClienteController.obter_cliente()  
         self.tree.delete(*self.tree.get_children())
         for cli in clientes:
             if not busca or busca.lower() in cli["Nome"].lower() or busca in cli["CPF"]:
@@ -60,8 +59,6 @@ class ClienteEditExcludeView(tk.Toplevel):
             "Nome": item["values"][1],
             "CPF": item["values"][2],
             "Telefone": item["values"][3],
-            # Se houver informações adicionais, como Rua, Número e Bairro,
-            # você pode adicioná-las aqui ou realizar uma consulta extra ao banco.
             "Rua": "",
             "Numero": "",
             "Bairro": ""
@@ -70,7 +67,6 @@ class ClienteEditExcludeView(tk.Toplevel):
         def atualizar_lista():
             self.carregar_clientes()
 
-        # Abre a view de edição, passando os dados do cliente e o callback para atualizar a lista
         ClienteEditView(self, cliente=cliente, on_editar_success=atualizar_lista)
 
     def excluir_cliente(self):

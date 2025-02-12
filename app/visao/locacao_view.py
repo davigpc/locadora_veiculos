@@ -90,7 +90,7 @@ class LocacaoView(tk.Toplevel):
             filtrados = [c for c in self.lista_clientes if texto_digitado in c.lower()]
             self.cliente_cb["values"] = filtrados
         else:
-            self.cliente_cb["values"] = self.lista_clientes  # Restaura todos os valores
+            self.cliente_cb["values"] = self.lista_clientes 
 
     def filtrar_veiculos(self, event):
         """Filtra os veículos conforme o usuário digita."""
@@ -99,7 +99,7 @@ class LocacaoView(tk.Toplevel):
             filtrados = [v for v in self.lista_veiculos if texto_digitado in v.lower()]
             self.veiculo_cb["values"] = filtrados
         else:
-            self.veiculo_cb["values"] = self.lista_veiculos  # Restaura todos os valores
+            self.veiculo_cb["values"] = self.lista_veiculos 
 
     def calcular_valor(self):
         """Calcula o valor total da locação com base no preço diário e no período."""
@@ -132,7 +132,7 @@ class LocacaoView(tk.Toplevel):
             self.tree.delete(item)
         locacoes = LocacaoController.listar_locacoes()
         for loc in locacoes:
-            # Verifica se Valor_Total é None e substitui por 0.00
+       
             valor_total = loc['Valor_Total'] if loc['Valor_Total'] is not None else 0.00
             id_funcionario = FuncionarioLogado().get_id()
             self.tree.insert("", tk.END, values=(
@@ -168,7 +168,6 @@ class LocacaoView(tk.Toplevel):
             data_fim = datetime.strptime(self.data_fim.get(), "%d/%m/%Y").strftime("%Y-%m-%d")
             funcionario_id = FuncionarioLogado().get_id()
 
-            # Verifica se o veículo já está alugado no período escolhido
             if LocacaoController.veiculo_ja_alugado(veiculo_id, data_inicio, data_fim):
                 messagebox.showerror("Erro", "Este veículo já está alugado nesse período!")
                 return  

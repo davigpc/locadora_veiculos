@@ -1,14 +1,14 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from app.controle.multa_controller import MultaController
-from app.controle.locacao_controller import LocacaoController  # Importação do controlador de locação
+from app.controle.locacao_controller import LocacaoController
 
 class MultasView(tk.Toplevel):
     def __init__(self, parent):
         super().__init__(parent)
         self.title("Gestão de Multas")
         self.geometry("800x600")
-        self.lista_locacoes = []  # Lista de locações disponíveis
+        self.lista_locacoes = [] 
         self.criar_widgets()
         self.carregar_locacoes()
         self.carregar_multas()
@@ -68,7 +68,7 @@ class MultasView(tk.Toplevel):
             filtrados = [loc for loc in self.lista_locacoes if texto_digitado in loc.lower()]
             self.locacao_cb["values"] = filtrados
         else:
-            self.locacao_cb["values"] = self.lista_locacoes  # Restaura a lista original
+            self.locacao_cb["values"] = self.lista_locacoes 
 
     def limpar_campos(self):
         """Limpa os campos do formulário."""

@@ -9,7 +9,7 @@ from app.visao.funcionario_edit_exclude_view import FuncionarioEditExcludeView
 from app.visao.cliente_edit_exclude_view import ClienteEditExcludeView
 from app.visao.locacao_edit_exclude_view import LocacaoEditExcludeView
 from app.visao.veiculo_edit_exclude_view import VeiculoEditExcludeView
-from app.visao.multa_edit_exclude_view import MultaEditExcludeView  # Importa a view de gerenciamento de multas
+from app.visao.multa_edit_exclude_view import MultaEditExcludeView 
 
 class MainView(tk.Tk):
     def __init__(self, funcionario):

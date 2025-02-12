@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from app.controle.funcionario_controller import FuncionarioController
-# Importa a view de edição – observe que ela terá uma assinatura similar à view de cadastro
 from app.visao.funcionario_edit_view import CadastroFuncionarioEditView  
 
 class FuncionarioEditExcludeView(tk.Toplevel):
@@ -56,15 +55,13 @@ class FuncionarioEditExcludeView(tk.Toplevel):
             return
 
         item = self.tree.item(selecionado[0])
-        # Extrai os dados disponíveis na Treeview.
-        # Se houver mais informações (como Rua, Número, Bairro) e não estiverem na Treeview,
-        # considere fazer uma consulta adicional no banco.
+  
         funcionario = {
             "ID": item["values"][0],
             "Nome": item["values"][1],
             "CPF": item["values"][2],
             "Telefone": item["values"][3],
-            "Rua": "",      # Valor padrão ou busque no banco se necessário
+            "Rua": "",    
             "Numero": "",
             "Bairro": ""
         }
@@ -72,7 +69,7 @@ class FuncionarioEditExcludeView(tk.Toplevel):
         def atualizar_lista():
             self.carregar_funcionarios()
 
-        # Aqui usamos a mesma lógica usada para ir para o cadastro, passando os dados do funcionário
+
         CadastroFuncionarioEditView(self, funcionario=funcionario, on_editar_success=atualizar_lista)
 
     def excluir_funcionario(self):
