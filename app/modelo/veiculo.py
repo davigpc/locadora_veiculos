@@ -31,8 +31,8 @@ class Veiculo:
             categoria=dados.get("Categoria"),
             preco_diario=dados.get("Preco_Diario")
         )
-        
-    @staticmethod            
+
+    @staticmethod
     def editar(id_veiculo, modelo, placa, ano, categoria, preco_diario):
         conexao = criar_conexao()
         if not conexao:
@@ -58,19 +58,21 @@ class Veiculo:
             if preco_diario:
                 sql += "Preco_Diario = %s, "
                 valores.append(preco_diario)
+                
             sql = sql.rstrip(', ') + " WHERE ID = %s"
             valores.append(id_veiculo)
             cursor.execute(sql, valores)
             conexao.commit()
+            return True
         except Exception as e:
             print(f"Erro ao editar veículo: {e}")
+            return False
         finally:
             cursor.close()
-            conexao.close()     
-        
-    @staticmethod            
+            conexao.close()
+
+    @staticmethod
     def remover(id_veiculo):
-        
         conexao = criar_conexao()
         if not conexao:
             return None
@@ -80,9 +82,40 @@ class Veiculo:
             sql = "DELETE FROM Veiculos WHERE ID = %s"
             cursor.execute(sql, (id_veiculo,))
             conexao.commit()
+            return True
         except Exception as e:
             print(f"Erro ao remover veículo: {e}")
-            return None
+            return False
         finally:
             cursor.close()
-            conexao.close() 
+            conexao.close()
+
+    @staticmethod
+    def obter(busca=None):
+        """
+        Retorna uma lista de veículos. Se o parâmetro 'busca' for informado,
+        filtra pelos campos Modelo ou Placa.
+        """
+        conexao = criar_conexao()
+        if not conexao:
+            return []
+        
+        try:
+            cursor = conexao.cursor(dictionary=True)
+            if busca:
+                sql = "SELECT * FROM Veiculos WHERE Modelo LIKE %s OR Placa LIKE %s"
+                parametro = f"%{busca}%"
+                cursor.execute(sql, (parametro, parametro))
+            else:
+                sql = "SELECT * FROM Veiculos"
+                cursor.execute(sql)
+            
+            veiculos = cursor.fetchall()
+            print("Veículos retornados:", veiculos)
+            return veiculos
+        except Exception as e:
+            print(f"Erro ao obter veículos: {e}")
+            return []
+        finally:
+            cursor.close()
+            conexao.close()

@@ -113,7 +113,7 @@ class Funcionario:
             return []
         
         try:
-            cursor = conexao.cursor(dictionary=True)  # Certifique-se que retorna um dicionário
+            cursor = conexao.cursor(dictionary=True) 
             
             if busca:
                 sql = "SELECT * FROM Funcionarios WHERE Nome LIKE %s OR CPF LIKE %s"
@@ -125,7 +125,6 @@ class Funcionario:
             
             funcionarios = cursor.fetchall()
 
-            # 🔍 Depuração: Imprime os dados retornados
             print("Funcionários retornados:", funcionarios)
 
             return funcionarios

@@ -72,3 +72,7 @@ class VeiculoController:
     @staticmethod            
     def remover_veiculo(id_veiculo):
         return Veiculo.remover(id_veiculo)
+    
+    @staticmethod
+    def obter_veiculo(busca=None):
+        return Veiculo.obter(busca)
