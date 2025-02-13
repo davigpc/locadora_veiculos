@@ -83,11 +83,12 @@ class Funcionario:
             valores.append(id_funcionario)
             cursor.execute(sql, valores)
             conexao.commit()
+            return True
         except Exception as e:
             print(f"Erro ao editar funcionário: {e}")
         finally:
             cursor.close()
-            conexao.close()     
+            conexao.close()    
         
     @staticmethod
     def remover(cpf_funcionario):

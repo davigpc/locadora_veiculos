@@ -66,6 +66,7 @@ class Multa:
             valores.append(id_multa)
             cursor.execute(sql, valores)
             conexao.commit()
+            return True
         except Exception as e:
             print(f"Erro ao editar multa: {e}")
         finally:

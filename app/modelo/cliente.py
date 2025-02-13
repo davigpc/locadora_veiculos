@@ -74,6 +74,7 @@ class Cliente:
             valores.append(id_cliente)
             cursor.execute(sql, valores)
             conexao.commit()
+            return True
         except Exception as e:
             print(f"Erro ao editar cliente: {e}")
         finally:
